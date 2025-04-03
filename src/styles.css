@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "primeicons/primeicons.css";
+
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base { 
+    @tailwind base; 
+}
+
+@layer tailwind-utilities { 
+    @tailwind components; 
+    @tailwind utilities; 
+}
+
+* {
+    font-family: Inter, sans-serif;
+}
+
+.p-drawer-content {
+    padding: 0 !important;
+}
+
+.p-toast .p-toast-message-icon {
+    display: none;
+}
+
+.p-toast-close-button {
+    color: #FFF;
+}
+
+.p-toast-close-button:hover {
+    background-color: #ffffff30;
+}
+
+.p-toast-message-error {
+    background-color: rgba(188, 0, 0, 0.688);
+}
+
+.p-toast-message-success {
+    background-color: rgba(0, 188, 91, 0.688);
+}
+
+.p-toast-message-info {
+    background-color: rgba(0, 116, 188, 0.688);
+}
+
+.p-toast-message-warn {
+    background-color: rgba(255, 204, 0, 0.914);
+    .p-toast-summary, .p-toast-detail {
+        color: #000 !important;
+    }
+}
+
+.p-toast-summary {
+    font-size: 17px;
+    font-weight: 600;
+    color: #FFF;
+}
+
+.p-toast-detail {
+    color: #FFF;
+}
+
+.p-tooltip .p-tooltip-text {
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+}
+
+.p-confirmpopup {
+    max-width: 300px;
+}
+
+.p-confirmpopup::before, 
+.p-confirmpopup::after {
+    display: none;
+}
+
+.p-toast-detail,
+.p-tieredmenu,
+.p-confirmpopup,
+.p-tooltip
+.p-tooltip-text {
+    font-size: 14px;
+}
+
+.p-paginator {
+    padding-top: 2rem;
+}
+
+.p-datatable-header {
+    padding: 0 0 1rem 0;
+}
+
+@media (width < 576px) {
+    .p-toast {
+        max-width: 280px;
+    }
+
+    .p-tooltip {
+        display: none !important;
+    }
+}

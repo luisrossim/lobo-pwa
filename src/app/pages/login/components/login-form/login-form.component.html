@@ -1,0 +1,25 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 gap-4 w-full">
+    <p-floatlabel variant="on" class="w-full">
+        <input 
+            pInputText 
+            id="email" 
+            formControlName="email" 
+            autocomplete="off" 
+            class="w-full"
+        />
+        <label for="email" class="text-sm">Email</label>
+    </p-floatlabel>
+    
+    <p-floatlabel variant="on">
+        <p-password 
+            id="password"
+            formControlName="password" 
+            [feedback]="false" 
+            [toggleMask]="true"
+            class="cursor-pointer"
+        />
+        <label for="password" class="text-sm">Senha</label>
+    </p-floatlabel>
+
+    <p-button type="submit" label="Acessar" [disabled]="loginForm.invalid" styleClass="w-full" />
+</form>

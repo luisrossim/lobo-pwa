@@ -1,0 +1,9 @@
+#nav-mobile {
+    z-index: 1;
+}
+
+@media (width >= 768px) {
+    #nav-mobile {
+        display: none;
+    }
+}

@@ -1,0 +1,77 @@
+<app-header [title]="title"></app-header>
+
+<div class="flex flex-col gap-4">
+  <div class="p-4 md:p-6 border rounded-xl min-h-[490px]">
+    <p-table
+        #dt1
+        [value]="itens"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [globalFilterFields]="['NOME']"
+        [rows]="5"
+        [paginator]="true"
+        stripedRows
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-between">
+          <div>
+            <span class="p-input-icon-left relative">
+              <i class="pi pi-search absolute right-3 top-[0.1rem]"></i>
+              <input
+                pInputText
+                pSize="small"
+                type="text"
+                (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+                placeholder="Pesquisar"
+              />
+            </span>
+          </div>
+
+          <div class="flex gap-4 items-center">   
+            <p-button severity="secondary" icon="pi pi-file" pTooltip="Gerar relatório" 
+            tooltipPosition="top" />
+            <p-button routerLink="novo" severity="success" icon="pi pi-plus" pTooltip="Cadastrar produto" 
+            tooltipPosition="top" />
+          </div>
+        </div>
+      </ng-template>
+    
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th pSortableColumn="NOME" style="width:20%">
+            NOME <p-sortIcon field="NOME" />
+          </th>
+          <!-- <th pSortableColumn="valor" style="width:20%">
+            Valor <p-sortIcon field="valor" />
+          </th>
+          <th>Categoria</th>
+          <th pSortableColumn="quantidadeEstoque" style="width:20%">
+            Quantidade <p-sortIcon field="quantidadeEstoque" />
+          </th>
+          <th pSortableColumn="estoqueMinimo" style="width:20%">
+            Estoque Mínimo <p-sortIcon field="estoqueMinimo" />
+          </th>
+          <th pSortableColumn="estoqueMaximo" style="width:20%">
+            Estoque Máximo <p-sortIcon field="estoqueMaximo" />
+          </th>
+          <th pSortableColumn="criadoEm" style="width:20%">
+            Criado <p-sortIcon field="criadoEm" />
+          </th> -->
+        </tr>
+      </ng-template>
+    
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{ item.ID }}</td>
+          <td>{{ item.NOME }}</td>
+          <!-- <td>{{ item.valor }}</td>
+          <td>{{ item.categoria.nome }}</td>
+          <td><p-badge severity="success" [value]="item.quantidadeEstoque"></p-badge></td>
+          <td><p-badge severity="danger" [value]="item.estoqueMinimo"></p-badge></td>
+          <td><p-badge severity="info" [value]="item.estoqueMaximo"></p-badge></td>
+          <td>{{ item.criadoEm | date: 'dd/MM/yyyy' }}</td> -->
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
