@@ -27,6 +27,10 @@ export class SidenavComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 1024){
+      this.collapsed = false;
+      this.onToggleSidenav.emit({ screenWidth: this.screenWidth, collapsed: this.collapsed })
+    }
   }
   
   ngOnInit(): void {

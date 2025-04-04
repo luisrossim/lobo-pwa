@@ -1,7 +1,7 @@
 export const SidenavData = [
     {
         link: 'dashboard',
-        icon: 'pi pi-chart-pie',
+        icon: 'pi pi-chart-bar',
         label: 'Dashboard'
     },
     {

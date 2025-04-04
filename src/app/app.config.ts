@@ -10,7 +10,7 @@ import { providePrimeNG } from 'primeng/config';
 import { AuraCustom } from './utils/styles/auraCustom';
 
 import { routes } from './app.routes';
-import { httpInterceptor } from './core/auth/http.interceptor';
+import { httpInterceptor } from './core/interceptor/http.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

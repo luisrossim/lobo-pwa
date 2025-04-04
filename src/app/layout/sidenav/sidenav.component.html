@@ -1,0 +1,36 @@
+<div class="sidenav bg-slate-50 border-r border-slate-100 z-50" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+    <div>
+        <div class="logo-container">
+            <button type="button" (click)="toggleCollapse()">
+                <img src="assets/images/lobo-azul.png" class="min-w-[2.9rem] w-[2.9em] rounded-full" alt="atip-image" draggable="false" >
+            </button>
+
+            @if(collapsed){
+                <div class="logo-text">
+                    <h1>Churrasqueiras Lobo</h1>
+                    <h2>Controle de estoque</h2>
+                </div>
+            }
+        </div>
+
+        <ul class="sidenav-nav overflow-hidden">
+
+            @for (nav of sidenavData; track nav.label) {
+                <li class="sidenav-nav-item">
+                    <a 
+                        [routerLink]="[ nav.link ]" class="sidenav-nav-link" 
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                        [pTooltip]="!collapsed ? nav.label : undefined" 
+                        tooltipPosition="right"
+                        (click)="this.closeSidenav()"
+                    >
+                        <i [ngClass]="[nav.icon]" class="sidenav-link-icon"></i>
+                        @if(collapsed){ 
+                            <span class="sidenav-link-text">{{ nav.label }}</span> 
+                        }
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

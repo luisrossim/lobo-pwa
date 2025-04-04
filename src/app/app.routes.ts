@@ -7,13 +7,13 @@ import { EstoqueComponent } from './pages/estoque/estoque.component';
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     {
-        path: '',
-        canActivate: [authGuard],
-        children: [
-          { path: 'dashboard', component: HomeComponent },
-          { path: 'estoque', component: EstoqueComponent},
-          { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-        ]
+      path: '',
+      canActivate: [authGuard],
+      children: [
+        { path: 'dashboard', component: HomeComponent, data: { animation: 'Dashboard' } },
+        { path: 'estoque', component: EstoqueComponent, data: { animation: 'Estoque' } },
+        { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      ]
     },
     { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
