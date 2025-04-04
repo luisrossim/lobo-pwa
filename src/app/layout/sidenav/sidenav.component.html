@@ -1,20 +1,19 @@
 <div class="sidenav bg-slate-50 border-r border-slate-100 z-50" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
-    <div>
-        <div class="logo-container">
-            <button type="button" (click)="toggleCollapse()">
-                <img src="assets/images/lobo-azul.png" class="min-w-[2.9rem] w-[2.9em] rounded-full" alt="atip-image" draggable="false" >
-            </button>
+    <div class="logo-container">
+        <button type="button" (click)="toggleCollapse()">
+            <img src="assets/images/lobo-azul.png" class="min-w-[2.9rem] w-[2.9em] min-h-[2.9rem] h-[2.9em] rounded-full" alt="lobo-estoque-logo" draggable="false" />
+        </button>
 
-            @if(collapsed){
-                <div class="logo-text">
-                    <h1>Churrasqueiras Lobo</h1>
-                    <h2>Controle de estoque</h2>
-                </div>
-            }
-        </div>
+        @if(collapsed){
+            <div class="logo-text">
+                <h1>Churrasqueiras Lobo</h1>
+                <h2>Controle de estoque</h2>
+            </div>
+        }
+    </div>
 
+    <div class="flex flex-col justify-between h-full">
         <ul class="sidenav-nav overflow-hidden">
-
             @for (nav of sidenavData; track nav.label) {
                 <li class="sidenav-nav-item">
                     <a 
@@ -31,6 +30,23 @@
                     </a>
                 </li>
             }
+        </ul>
+
+        <ul class="sidenav-nav overflow-hidden">
+            <li class="sidenav-nav-item">
+                <div class="sidenav-nav-link sidenav-nav-logout">
+                    <i class="pi pi-user sidenav-link-icon"></i>
+                    @if(collapsed){ 
+                        <div class="flex w-full justify-between items-center">
+                            <span class="text-slate-600 font-medium text-sm">luisrossasd9j8</span> 
+
+                            <button type="button" class="min-w-[30px] min-h-[30px] bg-slate-200 border rounded-full">
+                                <i class="pi pi-sign-out text-xs"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </li>
         </ul>
     </div>
 </div>

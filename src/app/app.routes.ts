@@ -3,17 +3,19 @@ import { authGuard } from './core/guards/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { EstoqueComponent } from './pages/estoque/estoque.component';
+import { NotFoundComponent } from './layout/not-found/not-found.component';
 
 export const routes: Routes = [
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     {
       path: '',
       canActivate: [authGuard],
       children: [
-        { path: 'dashboard', component: HomeComponent, data: { animation: 'Dashboard' } },
         { path: 'estoque', component: EstoqueComponent, data: { animation: 'Estoque' } },
-        { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+        { path: 'dashboard', component: HomeComponent, data: { animation: 'Dashboard' } }
       ]
     },
-    { path: '**', redirectTo: '', pathMatch: 'full' },
+    { path: 'notfound', component: NotFoundComponent },
+    { path: '**', redirectTo: 'notfound', pathMatch: 'full' },
 ];

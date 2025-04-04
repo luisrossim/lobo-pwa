@@ -4,16 +4,14 @@ import { SidenavData } from './sidenav-data';
 import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { SidenavToggle } from './sidenav-model';
-import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @Component({
   selector: 'app-sidenav',
   standalone: true,
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.css',
-  imports: [CommonModule, RouterModule, TooltipModule, AvatarModule, ButtonModule, ConfirmPopupModule]
+  imports: [CommonModule, RouterModule, TooltipModule, ButtonModule]
 })
 export class SidenavComponent implements OnInit {
   @Output() onToggleSidenav: EventEmitter<SidenavToggle> = new EventEmitter();
@@ -27,7 +25,7 @@ export class SidenavComponent implements OnInit {
   @HostListener('window:resize')
   onResize() {
     this.screenWidth = window.innerWidth;
-    if (this.screenWidth <= 1024){
+    if (this.screenWidth <= 1280){
       this.collapsed = false;
       this.onToggleSidenav.emit({ screenWidth: this.screenWidth, collapsed: this.collapsed })
     }

@@ -27,7 +27,7 @@ export class LoginFormComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Formulário enviado:', this.loginForm.value);
-      this.router.navigateByUrl('/dashboard');
+      this.router.navigateByUrl('/estoque');
     } else {
       console.log('Formulário inválido');
     }

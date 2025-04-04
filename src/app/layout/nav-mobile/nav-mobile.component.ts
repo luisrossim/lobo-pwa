@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { SidenavData } from '../sidenav/sidenav-data';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { DrawerService } from '../../utils/services/drawer.service';
 
 @Component({
   selector: 'app-nav-mobile',
@@ -13,11 +14,12 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
   styleUrl: './nav-mobile.component.css'
 })
 export class NavMobileComponent {
-  isDrawerVisible: boolean = false;
+  private drawerService = inject(DrawerService);
   sidenavData = SidenavData;
+  isDrawerVisible = this.drawerService.isDrawerVisible;
 
-  toggleDrawer() {
-    this.isDrawerVisible = !this.isDrawerVisible;
+  closeDrawer(){
+    this.drawerService.closeDrawer();
   }
 
 }

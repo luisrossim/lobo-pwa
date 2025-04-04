@@ -1,35 +1,39 @@
 <app-header [title]="title"></app-header>
 
-<section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-   <div class="border border-slate-200 rounded-xl p-4">
-      <div class="flex flex-col md:flex-row justify-between md:items-center gap-2">
-         <h2 class="flex items-center gap-2 text-slate-700 font-medium p-2">
-            <i class="pi pi-history"></i>
-            <p>Histórico do estoque</p>
-         </h2>
-
-         <p-button label="Linha" icon="pi pi-chevron-down" severity="primary" size="small" rounded />
+<section class="flex flex-col gap-8 px-4 md:px-8">
+   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="border border-slate-200 rounded-3xl p-4">
+         <div class="flex flex-col md:flex-row justify-between md:items-center gap-2">
+            <h2 class="flex items-center gap-2 text-slate-700 font-medium p-2">
+               <i class="pi pi-history"></i>
+               <p>Histórico do estoque</p>
+            </h2>
+   
+            <p-button label="Linha" icon="pi pi-chevron-down" severity="primary" size="small" rounded />
+         </div>
+      
+         <p-chart type="line" [data]="data3" [options]="options3" />
       </div>
    
-      <p-chart type="line" [data]="data3" [options]="options3" />
-   </div>
-
-   <div class="border border-slate-200 rounded-xl p-4">
-      <div class="flex flex-col md:flex-row justify-between md:items-center gap-2">
-         <h2 class="flex items-center gap-2 text-slate-700 font-medium p-2">
-            <i class="pi pi-history"></i>
-            <p>Histórico do estoque</p>
-         </h2>
-
-         <p-button label="Linha" icon="pi pi-chevron-down" severity="primary" size="small" rounded />
-      </div>
+      <div class="border border-slate-200 rounded-3xl p-4">
+         <div class="flex flex-col md:flex-row justify-between md:items-center gap-2">
+            <h2 class="flex items-center gap-2 text-slate-700 font-medium p-2">
+               <i class="pi pi-history"></i>
+               <p>Histórico do estoque</p>
+            </h2>
    
-      <p-chart type="bar" [data]="data3" [options]="options3" />
+            <p-button label="Linha" icon="pi pi-chevron-down" severity="primary" size="small" rounded />
+         </div>
+      
+         <p-chart type="bar" [data]="data3" [options]="options3" />
+      </div>
    </div>
-</section>
-
-<section class="bg-slate-50 border-2 border-slate-100 rounded-xl p-4">
-   <div class="flex justify-center items-center p-40">
-      <i class="pi pi-code text-slate-500"></i>
+   
+   <div class="border border-slate-200 rounded-3xl p-4">
+      <div class="flex justify-center items-center p-40"></div>
+   </div>
+   
+   <div class="border border-slate-200 rounded-3xl p-4">
+      <div class="flex justify-center items-center p-40"></div>
    </div>
 </section>

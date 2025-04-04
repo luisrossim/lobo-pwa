@@ -10,10 +10,15 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ItemService } from '../../core/services/item.service';
 import { ToastService } from '../../utils/services/toast.service';
 import { Item } from '../../models/item';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { FormsModule } from '@angular/forms';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-estoque',
-  imports: [CommonModule, ButtonModule, TableModule, BadgeModule, IconFieldModule, InputIconModule, InputTextModule, TooltipModule],
+  imports: [CommonModule, FormsModule, ButtonModule, TableModule, BadgeModule, IconFieldModule, InputIconModule, InputTextModule, TooltipModule, HeaderComponent, ConfirmDialogModule],
+  providers: [ConfirmationService],
   templateUrl: './estoque.component.html',
   styleUrl: './estoque.component.css'
 })
@@ -21,55 +26,154 @@ export class EstoqueComponent implements OnInit {
   private readonly itemService = inject(ItemService);
   private readonly toastService = inject(ToastService);
 
+  title: string = "Estoque Semanal"
   itens: Item[] = []
   products: any[] = []
+  dataAtual: Date = new Date();
 
-  constructor() {}  
+  constructor(private confirmService: ConfirmationService) {}  
   
   ngOnInit() {
     this.products = [
         {
-            "code": "P12345",
-            "name": "Produto Exemplo 1",
-            "category": "Eletrônicos",
-            "quantity": 50
-          },
-          {
-            "code": "P12346",
-            "name": "Produto Exemplo 2",
-            "category": "Livros",
-            "quantity": 10
-          },
-          {
-            "code": "P12347",
-            "name": "Produto Exemplo 3",
-            "category": "Móveis",
-            "quantity": 5
-          },
-          {
-            "code": "P12348",
-            "name": "Produto Exemplo 4",
-            "category": "Vestuário",
-            "quantity": 100
-          },
-          {
-            "code": "P12349",
-            "name": "Produto Exemplo 5",
-            "category": "Esportes",
-            "quantity": 25
-          },
-          {
-            "code": "P12350",
-            "name": "Produto Exemplo 6",
-            "category": "Brinquedos",
-            "quantity": 40
-          },
-          {
-            "code": "P12351",
-            "name": "Produto Exemplo 7",
-            "category": "Ferramentas",
-            "quantity": 15
-          }
+          "code": "1",
+          "nome": "Produto Exemplo fghf fghgfh fghghhfghfghf fawdawdawd awdawdawdaw wdghfhfghf 1",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "2",
+          "nome": "Produto Exemplo 2",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "3",
+          "nome": "Produto Exemplo 3",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "4",
+          "nome": "Produto Exemplo 4",
+          "quantity": [
+            50, 1500, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "5",
+          "nome": "Produto Exemplo 5",
+          "category": "Esportes",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "6",
+          "nome": "Produto Exemplo 6",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "7",
+          "nome": "Produto Exemplo 7",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "8",
+          "nome": "Produto Exemplo 8",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "9",
+          "nome": "Produto Exemplo 9",
+          "quantity": [
+            50, 1500, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "10",
+          "nome": "Produto Exemplo 10",
+          "category": "Esportes",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "11",
+          "nome": "Produto Exemplo 11",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "12",
+          "nome": "Produto Exemplo 12",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "13",
+          "nome": "Produto Exemplo 13",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "14",
+          "nome": "Produto Exemplo 14",
+          "quantity": [
+            50, 1500, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "15",
+          "nome": "Produto Exemplo 15",
+          "category": "Esportes",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "16",
+          "nome": "Produto Exemplo 16",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        },
+        {
+          "code": "17",
+          "nome": "Produto Exemplo 17",
+          "quantity": [
+            50, 15, 52
+          ],
+          "novaContagem": null
+        }
       ]
   }
 
@@ -83,5 +187,44 @@ export class EstoqueComponent implements OnInit {
         this.toastService.error("Erro ao buscar estoque!");
       }
     });
+  }
+
+  confirm1(event: Event) {
+    this.confirmService.confirm({
+        target: event.target as EventTarget,
+        message: 'Tem certeza que deseja salvar os itens?',
+        header: 'Confirmação',
+        closable: true,
+        closeOnEscape: true,
+        icon: 'pi pi-exclamation-circle',
+        rejectButtonProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true,
+        },
+        acceptButtonProps: {
+            label: 'Salvar',
+            severity: 'primary',
+        },
+        accept: () => {
+          this.enviarContagem();
+        },
+        reject: () => {},
+    });
+}
+
+  enviarContagem() {
+    const hoje = new Date();
+    const dataHoje = hoje.toISOString().split('T')[0];
+  
+    const contagens = this.products
+      .filter(p => p.novaContagem != null && p.novaContagem !== '')
+      .map(p => ({
+        code: p.code,
+        quantidade: p.novaContagem,
+        data: dataHoje
+      }));
+  
+    console.log('Contagens preparadas para envio:', contagens);
   }
 }

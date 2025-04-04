@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { DrawerService } from '../../utils/services/drawer.service';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +8,11 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './header.component.html'
 })
 export class HeaderComponent {
- @Input() title: string = ""
+  private drawerService = inject(DrawerService);
+  @Input() title: string = ""
+
+  openDrawer() {
+    this.drawerService.openDrawer();
+  }
+
 }

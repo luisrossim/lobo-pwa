@@ -1,52 +1,99 @@
-<section class="grid grid-cols-1">
-    <div class="md:col-span-3 p-4 md:p-6 border rounded-xl min-h-[490px]">
-       <p-table
+<app-header [title]="title"></app-header>
+
+<section class="grid grid-cols-1 px-4 md:px-8">
+      <div class="md:col-span-3 p-4 md:p-6 border border-slate-200 rounded-3xl">
+        <p-table
           #dt2
           [value]="products"
-          [tableStyle]="{ 'min-width': '50rem' }"
           [globalFilterFields]="['nome']"
-          [rows]="5"
-          [paginator]="true"
-       >
-          <ng-template pTemplate="caption">
-             <div class="flex justify-between">
-                <h2 class="flex items-center gap-2 text-slate-800 font-medium p-2">
-                   <i class="pi pi-box"></i>
-                   <span>Estoque</span>
-                </h2>
-                <div>
-                   <span class="p-input-icon-left relative">
-                      <i class="pi pi-search absolute right-3 top-0"></i>
-                      <input
-                         pInputText
-                         type="text"
-                         (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
-                         placeholder="Search keyword"
-                      />
-                   </span>
-                </div>
-             </div>
-         </ng-template>
+          stripedRows 
+          [scrollable]="true"
+          scrollHeight="calc(100vh - 275px)"
+        >
+        <ng-template pTemplate="caption">
+          <div class="flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+              <i class="pi pi-box text-lg"></i>
+              <h1 class="font-bold text-slate-700 text-lg md:text-xl">Contagem</h1>
+            </div>
+            <div class="flex items-center gap-4">
+              <div>
+                <span class="p-input-icon-left relative">
+                    <i class="pi pi-search absolute right-5 top-[0.2rem] text-sm"></i>
+                    <input
+                      pInputText
+                      type="text"
+                      class="rounded-full px-4"
+                      (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+                      placeholder="Pesquisar"
+                    />
+                </span>
+              </div>
+              <div>
+                <button
+                  pButton
+                  type="button"
+                  label="Salvar"
+                  rounded
+                  size="small"
+                  (click)="confirm1($event)"
+                  icon="pi pi-save"
+                ></button> 
+              </div>
+            </div>
+          </div>
+        </ng-template>
      
-         <ng-template pTemplate="header">
+         <ng-template #header>
            <tr>
-             <th>Code</th>
-             <th>Name</th>
-             <th>Category</th>
-             <th>Quantity</th>
+             <th class="w-[50px]">Item</th>
+             <th class="w-[200px]">Descrição</th>
+             <th class="w-[70px]">Estoque Mínimo</th>
+             <th class="w-[70px]">01/01</th>
+             <th class="w-[70px]">08/01</th>
+             <th class="w-[70px]">15/01</th>
+             <th class="w-[200px]">{{ dataAtual | date: 'dd/MM' }}</th>
            </tr>
          </ng-template>
      
          <ng-template pTemplate="body" let-product>
-           <tr>
-             <td>{{ product.code }}</td>
-             <td>{{ product.name }}</td>
-             <td>{{ product.category }}</td>
-             <td>
-               <p-badge [value]="product.quantity"></p-badge>
-             </td>
-           </tr>
-         </ng-template>
+            <tr>
+              <td style="font-size: 14px;">{{ product.code }}</td>
+              <td style="font-size: 14px;">{{ product.nome }}</td>
+              <td>
+                <p-badge [value]="1220" class="bg-slate-500" badgeSize="large"></p-badge>
+              </td>
+        
+              <!-- Contagens anteriores -->
+              <td *ngFor="let quantidade of product.quantity">
+                <p-badge [value]="quantidade" badgeSize="large"></p-badge>
+              </td>
+        
+              <!-- Última coluna editável -->
+            <td pEditableColumn pEditableColumnField="novaContagem" class="cursor-pointer">
+               <p-cellEditor>
+                 <ng-template pTemplate="input">
+                   <input
+                     type="number"
+                     pInputText
+                     class="w-[100px] px-2 py-1"
+                     [(ngModel)]="product.novaContagem"
+                   />
+                 </ng-template>
+                 <ng-template pTemplate="output">
+                   <ng-container *ngIf="product.novaContagem != null && product.novaContagem !== ''; else vazio">
+                     {{ product.novaContagem }}
+                   </ng-container>
+                   <ng-template #vazio>
+                     <i class="pi pi-plus-circle cursor-pointer text-emerald-500 text-base"></i>
+                   </ng-template>
+                 </ng-template>
+               </p-cellEditor>
+             </td>             
+            </tr>
+          </ng-template>
        </p-table>
     </div>
+
+    <p-confirmdialog [draggable]="false" />
 </section>

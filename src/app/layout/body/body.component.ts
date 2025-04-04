@@ -31,11 +31,11 @@ export class BodyComponent {
   private updateBodyClass(): void {
     const classes = [];
   
-    if (this._collapsed && this._screenWidth > 1024) {
+    if (this._collapsed && this._screenWidth > 1280) {
       classes.push('body-trimmed');
     }
   
-    if (this._collapsed && this._screenWidth <= 1024) {
+    if (this._collapsed && this._screenWidth <= 1280) {
       classes.push('body-overlay');
     }
   

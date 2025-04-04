@@ -8,10 +8,11 @@ import { MessageService } from 'primeng/api';
 import { LoadingComponent } from './layout/loading/loading.component';
 import { UtilitiesService } from './utils/services/utilities.service';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavMobileComponent } from './layout/nav-mobile/nav-mobile.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BodyComponent, SidenavComponent, LoadingComponent, ToastModule],
+  imports: [RouterOutlet, BodyComponent, SidenavComponent, LoadingComponent, ToastModule, NavMobileComponent],
   providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -29,10 +30,12 @@ export class AppComponent implements OnInit {
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.showLayout = event.url !== '/login'; 
+        const url = event.urlAfterRedirects;
+        this.showLayout = !(url.includes('login') || url.includes('notfound'));
       }
     });
   }
+  
   
   ngOnInit(): void {
     this.listenToastService();
