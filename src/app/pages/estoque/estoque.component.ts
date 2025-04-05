@@ -19,8 +19,7 @@ import { ConfirmationService } from 'primeng/api';
   selector: 'app-estoque',
   imports: [CommonModule, FormsModule, ButtonModule, TableModule, BadgeModule, IconFieldModule, InputIconModule, InputTextModule, TooltipModule, HeaderComponent, ConfirmDialogModule],
   providers: [ConfirmationService],
-  templateUrl: './estoque.component.html',
-  styleUrl: './estoque.component.css'
+  templateUrl: './estoque.component.html'
 })
 export class EstoqueComponent implements OnInit {
   private readonly itemService = inject(ItemService);

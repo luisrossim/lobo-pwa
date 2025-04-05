@@ -7,7 +7,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
   selector: 'app-login',
   imports: [LoginFormComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
   animations: [
     trigger('slideTop', [
       transition(':enter', [
@@ -23,4 +22,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class LoginComponent {}
+export class LoginComponent {
+  constructor(){}
+}

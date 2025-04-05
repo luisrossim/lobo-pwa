@@ -15,8 +15,7 @@ import { HeaderComponent } from '../../layout/header/header.component';
 @Component({
   selector: 'app-home',
   imports: [ChartModule, MeterGroupModule, ButtonModule, TableModule, BadgeModule, IconFieldModule, InputIconModule, InputTextModule, DatePickerModule, HeaderComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
   title: string = "Dashboard"

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EstoqueComponent } from './estoque.component';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { httpInterceptor } from '../../core/interceptor/http.interceptor';
 
 describe('EstoqueComponent', () => {
   let component: EstoqueComponent;
@@ -8,7 +9,8 @@ describe('EstoqueComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EstoqueComponent]
+      imports: [EstoqueComponent],
+      providers:[provideHttpClient(withInterceptors([httpInterceptor]))]
     })
     .compileComponents();
 

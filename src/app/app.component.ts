@@ -14,8 +14,7 @@ import { NavMobileComponent } from './layout/nav-mobile/nav-mobile.component';
   selector: 'app-root',
   imports: [RouterOutlet, BodyComponent, SidenavComponent, LoadingComponent, ToastModule, NavMobileComponent],
   providers: [MessageService],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   toastService = inject(ToastService);
