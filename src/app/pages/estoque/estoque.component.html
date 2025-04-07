@@ -1,20 +1,24 @@
 <app-header [title]="title"></app-header>
 
 <section class="grid grid-cols-1 px-4 md:px-8">
-      <div class="md:col-span-3 p-4 md:p-6 border border-slate-200 rounded-3xl">
-        <p-table
-          #dt2
-          [value]="products"
-          [globalFilterFields]="['nome']"
-          stripedRows 
-          [scrollable]="true"
-          scrollHeight="calc(100vh - 275px)"
-        >
+  <div class="md:col-span-3 p-4 md:p-6 border border-slate-200 rounded-3xl">
+    
+    @if (inventoryHistoryGroup.length > 0){
+      <p-table
+        #dt1
+        [value]="inventoryHistoryGroup"
+        scrollHeight="calc(100vh - 275px)"
+        [globalFilterFields]="['descricao']"
+        [scrollable]="true"
+        stripedRows 
+      >
         <ng-template pTemplate="caption">
           <div class="flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-2">
               <i class="pi pi-box text-lg"></i>
-              <h1 class="font-bold text-slate-700 text-lg md:text-xl">Contagem</h1>
+              <h1 class="font-bold text-slate-700 text-lg md:text-xl">
+                Contagem (últimos 28 dias)
+              </h1>
             </div>
             <div class="flex items-center gap-4">
               <div>
@@ -24,7 +28,7 @@
                       pInputText
                       type="text"
                       class="rounded-full px-4"
-                      (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+                      (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
                       placeholder="Pesquisar"
                     />
                 </span>
@@ -33,67 +37,66 @@
                 <button
                   pButton
                   type="button"
-                  label="Salvar"
+                  [label]="finishedToday ? 'Já realizou hoje' : 'Nova contagem'"
                   rounded
                   size="small"
-                  (click)="confirm1($event)"
-                  icon="pi pi-save"
+                  [icon]="finishedToday ? 'pi pi-check' : 'pi pi-plus'"
+                  [disabled]="finishedToday"
+                  (click)="navigateToNovaContagem()"
                 ></button> 
               </div>
             </div>
           </div>
         </ng-template>
-     
-         <ng-template #header>
-           <tr>
-             <th class="w-[50px]">Item</th>
-             <th class="w-[200px]">Descrição</th>
-             <th class="w-[70px]">Estoque Mínimo</th>
-             <th class="w-[70px]">01/01</th>
-             <th class="w-[70px]">08/01</th>
-             <th class="w-[70px]">15/01</th>
-             <th class="w-[200px]">{{ dataAtual | date: 'dd/MM' }}</th>
-           </tr>
-         </ng-template>
-     
-         <ng-template pTemplate="body" let-product>
-            <tr>
-              <td style="font-size: 14px;">{{ product.code }}</td>
-              <td style="font-size: 14px;">{{ product.nome }}</td>
-              <td>
-                <p-badge [value]="1220" class="bg-slate-500" badgeSize="large"></p-badge>
-              </td>
-        
-              <!-- Contagens anteriores -->
-              <td *ngFor="let quantidade of product.quantity">
-                <p-badge [value]="quantidade" badgeSize="large"></p-badge>
-              </td>
-        
-              <!-- Última coluna editável -->
-            <td pEditableColumn pEditableColumnField="novaContagem" class="cursor-pointer">
-               <p-cellEditor>
-                 <ng-template pTemplate="input">
-                   <input
-                     type="number"
-                     pInputText
-                     class="w-[100px] px-2 py-1"
-                     [(ngModel)]="product.novaContagem"
-                   />
-                 </ng-template>
-                 <ng-template pTemplate="output">
-                   <ng-container *ngIf="product.novaContagem != null && product.novaContagem !== ''; else vazio">
-                     {{ product.novaContagem }}
-                   </ng-container>
-                   <ng-template #vazio>
-                     <i class="pi pi-plus-circle cursor-pointer text-emerald-500 text-base"></i>
-                   </ng-template>
-                 </ng-template>
-               </p-cellEditor>
-             </td>             
-            </tr>
-          </ng-template>
-       </p-table>
-    </div>
+    
+        <ng-template #header>
+          <tr>
+            <th class="w-[50px]">Item</th>
+            <th class="w-[200px]">Descrição</th>
+            <th class="w-[200px]">Estoque Mínimo</th>
 
-    <p-confirmdialog [draggable]="false" />
+            @for (data of dataAgrupadas; track $index) {
+              <th class="w-[200px]">
+                {{ data | date: 'dd/MM' }}
+              </th>
+            }
+          </tr>
+        </ng-template>
+    
+        <ng-template pTemplate="body" let-registro>
+          <tr>
+            <td style="font-size: 14px">{{ registro.itemId }}</td>
+            <td style="font-size: 14px">{{ registro.descricao }}</td>
+            <td>
+              <p-badge 
+                [value]="handleEstoqueMinimoText(registro.estoqueMinimo, registro.unidade)" 
+                class="bg-slate-500" 
+                badgeSize="large"
+              />
+            </td>
+            
+            @for (data of dataAgrupadas; track $index) {
+              <td>
+                <ng-container *ngIf="registro.contagensPorData[data]?.quantidade !== undefined; else vazio">
+                  <p-badge
+                    [value]="registro.contagensPorData[data]?.quantidade"
+                    class="bg-blue-500"
+                    badgeSize="large"
+                  />
+                </ng-container>
+                <ng-template #vazio>
+                  -
+                </ng-template>
+              </td>
+            }
+            
+          </tr>
+        </ng-template>
+      </p-table>
+    } 
+    @else {
+      <p>Nenhum item encontrado.</p>
+    }
+
+  </div>
 </section>

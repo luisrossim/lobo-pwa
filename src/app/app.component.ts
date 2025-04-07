@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { BodyComponent } from './layout/body/body.component';
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { SidenavToggle } from './layout/sidenav/sidenav-model';
@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   isSideNavCollapsed: boolean = false;
   isLoading: boolean = false;
 
+
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -41,10 +42,12 @@ export class AppComponent implements OnInit {
     this.listenLoadingService();
   }
 
+
   onToggleSidenav(data: SidenavToggle): void {
     this.screenWidth = data.screenWidth;
     this.isSideNavCollapsed = data.collapsed;
   }
+
 
   private listenToastService() {
     this.toastService.send$.subscribe({
@@ -55,6 +58,7 @@ export class AppComponent implements OnInit {
       }
     })
   }
+
 
   private listenLoadingService() {
     this.utilitiesService.loading$.subscribe((value) => {
