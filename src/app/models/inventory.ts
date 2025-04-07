@@ -21,3 +21,8 @@ export interface HistoryItemAgrupado {
     unidade: string;
     contagens: InventoryContagem[];
 }
+
+export interface CreateHistory {
+    itemId: number
+    quantidade: number
+}

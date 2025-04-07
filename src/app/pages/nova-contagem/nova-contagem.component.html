@@ -1,0 +1,70 @@
+<app-header [title]="title"></app-header>
+
+<section class="grid grid-cols-1 px-4 md:px-8">
+    <div class="p-4 md:p-6 border border-slate-200 rounded-3xl">
+        @if(itens){
+            <div class="flex items-center justify-between gap-4 flex-wrap mb-5">
+                <h1 class="font-bold text-slate-700 text-base md:text-lg lg:text-xl">
+                    Lista de contagem
+                </h1>
+    
+                <div class="flex items-center flex-wrap gap-4">
+                    <p-button 
+                        label="Recarregar" 
+                        (click)="resetItens()" 
+                        icon="pi pi-refresh" 
+                        severity="warn" 
+                        size="small"
+                        rounded
+                        outlined
+                    />
+                    <p-button 
+                        label="Salvar" 
+                        (click)="salvarTemporariamente()" 
+                        icon="pi pi-clock" 
+                        severity="secondary" 
+                        size="small"
+                        rounded 
+                    />
+                    <p-button 
+                        label="Finalizar" 
+                        (click)="confirmFinalizar($event)" 
+                        icon="pi pi-check" 
+                        severity="success"
+                        size="small"
+                        rounded 
+                    />
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                @for (item of itens; track $index) {
+                    <div 
+                        class="grid grid-cols-[50px_1fr_150px] items-center gap-4 rounded-lg py-2 px-4"
+                        [ngClass]="{ 'bg-slate-50': $index % 2 === 1 }"
+                    >
+                        <span class="text-sm text-slate-400">
+                            {{ item.ID }}
+                        </span>
+                        
+                        <span class="text-sm">
+                            {{ item.DESCRICAO }}
+                        </span>
+                        
+                        <input
+                            pInputText
+                            type="number" 
+                            [(ngModel)]="item.NOVA_CONTAGEM" 
+                            class="w-full text-right"
+                        />
+                    </div>
+                }
+            </div>
+        } 
+        @else {
+            <p>Nenhum item encontrado.</p>
+        }
+    </div>
+
+    <p-confirmdialog [draggable]="false" />
+</section>

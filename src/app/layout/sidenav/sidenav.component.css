@@ -88,8 +88,8 @@
 }
 
 .active {
-    background-color: #1073e428;
-    color: #005ac0 !important;
+    background-color: #1073e418;
+    color: #0767d4 !important;
 }
 
 @media (width < 768px) {
