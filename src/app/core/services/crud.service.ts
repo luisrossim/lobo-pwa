@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export class CrudService<T> {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl: string;
+  protected readonly http = inject(HttpClient);
+  protected readonly apiUrl: string;
   
   constructor(
     protected readonly path: string,
@@ -16,10 +16,6 @@ export class CrudService<T> {
 
   public create(resource: Partial<T>): Observable<T> {
     return this.http.post<T>(`${this.apiUrl}`, resource);
-  }
-
-  public createAll(resource: Partial<T[]>): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}`, resource);
   }
 
   public getAll(query?: { [key: string]: string }): Observable<T[]> {
