@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NovaContagemComponent } from './nova-contagem.component';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { httpInterceptor } from '../../core/interceptor/http.interceptor';
 
 describe('NovaContagemComponent', () => {
   let component: NovaContagemComponent;
@@ -8,7 +10,8 @@ describe('NovaContagemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NovaContagemComponent]
+      imports: [NovaContagemComponent],
+      providers:[provideHttpClient(withInterceptors([httpInterceptor]))]
     })
     .compileComponents();
 
