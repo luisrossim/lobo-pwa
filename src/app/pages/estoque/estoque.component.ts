@@ -5,225 +5,129 @@ import { TableModule } from 'primeng/table';
 import { BadgeModule } from 'primeng/badge';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
-import { ItemService } from '../../core/services/item.service';
 import { ToastService } from '../../utils/services/toast.service';
-import { Item } from '../../models/item';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { FormsModule } from '@angular/forms';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
+import { HistoryItemAgrupado, InventoryHistory } from '../../models/inventory';
+import { InventoryService } from '../../core/services/inventory.service';
+import { InputText } from 'primeng/inputtext';
+import { format } from 'date-fns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-estoque',
-  imports: [CommonModule, FormsModule, ButtonModule, TableModule, BadgeModule, IconFieldModule, InputIconModule, InputTextModule, TooltipModule, HeaderComponent, ConfirmDialogModule],
-  providers: [ConfirmationService],
+  imports: [CommonModule, FormsModule, ButtonModule, TableModule, InputText, BadgeModule, IconFieldModule, InputIconModule, TooltipModule, HeaderComponent],
   templateUrl: './estoque.component.html'
 })
 export class EstoqueComponent implements OnInit {
-  private readonly itemService = inject(ItemService);
+  private readonly inventoryService = inject(InventoryService);
   private readonly toastService = inject(ToastService);
+  router = inject(Router);  
 
   title: string = "Estoque Semanal"
-  itens: Item[] = []
-  products: any[] = []
-  dataAtual: Date = new Date();
+  inventoryHistoryGroup: any[] = []
+  _inventoryHistoryGroup: HistoryItemAgrupado[] = []
+  dataAgrupadas: string[] = []
+  finishedToday: boolean = false
 
-  constructor(private confirmService: ConfirmationService) {}  
   
+  constructor() {}  
+  
+
   ngOnInit() {
-    this.products = [
-        {
-          "code": "1",
-          "nome": "Produto Exemplo fghf fghgfh fghghhfghfghf fawdawdawd awdawdawdaw wdghfhfghf 1",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "2",
-          "nome": "Produto Exemplo 2",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "3",
-          "nome": "Produto Exemplo 3",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "4",
-          "nome": "Produto Exemplo 4",
-          "quantity": [
-            50, 1500, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "5",
-          "nome": "Produto Exemplo 5",
-          "category": "Esportes",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "6",
-          "nome": "Produto Exemplo 6",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "7",
-          "nome": "Produto Exemplo 7",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "8",
-          "nome": "Produto Exemplo 8",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "9",
-          "nome": "Produto Exemplo 9",
-          "quantity": [
-            50, 1500, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "10",
-          "nome": "Produto Exemplo 10",
-          "category": "Esportes",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "11",
-          "nome": "Produto Exemplo 11",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "12",
-          "nome": "Produto Exemplo 12",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "13",
-          "nome": "Produto Exemplo 13",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "14",
-          "nome": "Produto Exemplo 14",
-          "quantity": [
-            50, 1500, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "15",
-          "nome": "Produto Exemplo 15",
-          "category": "Esportes",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "16",
-          "nome": "Produto Exemplo 16",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        },
-        {
-          "code": "17",
-          "nome": "Produto Exemplo 17",
-          "quantity": [
-            50, 15, 52
-          ],
-          "novaContagem": null
-        }
-      ]
+    this.fetchInventoryHistory();
   }
 
 
-  private fetchItens(){
-    this.itemService.getAll().subscribe({
-      next: (itens) => (
-        this.itens = itens || []
+  private fetchInventoryHistory(){
+    this.inventoryService.getAll().subscribe({
+      next: (result) => (
+        this.handleInventoryHistoryInterface(result)
       ),
       error: (error) => { 
-        this.toastService.error("Erro ao buscar estoque!");
+        this.toastService.error("Erro ao buscar histórico do inventário!")
       }
     });
   }
 
-  confirm1(event: Event) {
-    this.confirmService.confirm({
-        target: event.target as EventTarget,
-        message: 'Tem certeza que deseja salvar os itens?',
-        header: 'Confirmação',
-        closable: true,
-        closeOnEscape: true,
-        icon: 'pi pi-exclamation-circle',
-        rejectButtonProps: {
-            label: 'Cancelar',
-            severity: 'secondary',
-            outlined: true,
-        },
-        acceptButtonProps: {
-            label: 'Salvar',
-            severity: 'primary',
-        },
-        accept: () => {
-          this.enviarContagem();
-        },
-        reject: () => {},
-    });
-}
 
-  enviarContagem() {
-    const hoje = new Date();
-    const dataHoje = hoje.toISOString().split('T')[0];
+  handleInventoryHistoryInterface(registros: InventoryHistory[]){
+    this._inventoryHistoryGroup = this.agruparEstoquePorItem(registros);
+    this.agruparRegistrosPorData();
+  }
+
+
+  agruparEstoquePorItem(registros: any[]): HistoryItemAgrupado[] {
+    return registros.reduce((acc: HistoryItemAgrupado[], _atual) => {
+      const atual: InventoryHistory = _atual;
   
-    const contagens = this.products
-      .filter(p => p.novaContagem != null && p.novaContagem !== '')
-      .map(p => ({
-        code: p.code,
-        quantidade: p.novaContagem,
-        data: dataHoje
-      }));
+      let existente = acc.find(item => item.itemId === atual.ITEM_ID);
+      if (!existente) {
+        existente = {
+          itemId: atual.ITEM_ID,
+          descricao: atual.DESCRICAO,
+          estoqueMinimo: atual.ESTOQUE_MINIMO,
+          unidade: atual.UN_MEDIDA,
+          contagens: []
+        };
+        acc.push(existente);
+      }
   
-    console.log('Contagens preparadas para envio:', contagens);
+      existente.contagens.push({
+        id: atual.ID,
+        quantidade: atual.QUANTIDADE,
+        criadoEm: atual.CRIADO_EM
+      });
+  
+      return acc;
+    }, []);
+  }
+
+
+  agruparRegistrosPorData(){
+    this.dataAgrupadas = Array.from(
+      new Set(
+        this._inventoryHistoryGroup.flatMap(item =>
+          item.contagens.map(c => c.criadoEm)
+        )
+      )
+    ).sort(); 
+
+    this.inventoryHistoryGroup = this._inventoryHistoryGroup.map(item => {
+      const contagensPorData: Record<string, { id?: number; quantidade?: number }> = {};
+    
+      this.dataAgrupadas.forEach(data => {
+        const contagem = item.contagens.find(c => c.criadoEm === data);
+        contagensPorData[data] = contagem
+          ? { id: contagem.id, quantidade: contagem.quantidade }
+          : {};
+      });
+    
+      return {
+        itemId: item.itemId,
+        descricao: item.descricao,
+        estoqueMinimo: item.estoqueMinimo,
+        unidade: item.unidade,
+        contagensPorData
+      };
+    });
+
+    this.hasDataHoje();
+  }
+
+
+  protected handleEstoqueMinimoText(estoqueMinimo: number, unidade: string){
+    return `${estoqueMinimo} ${unidade}`
+  }
+
+
+  hasDataHoje(): void {
+    const hoje = format(new Date(), 'yyyy-MM-dd');
+    this.finishedToday = this.dataAgrupadas.some(data => format(new Date(data), 'yyyy-MM-dd') === hoje);
+  }
+
+  navigateToNovaContagem(){
+    this.router.navigateByUrl('estoque/contagem')
   }
 }

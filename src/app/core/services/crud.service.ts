@@ -8,14 +8,18 @@ export class CrudService<T> {
   private readonly apiUrl: string;
   
   constructor(
-    protected readonly entityName: string,
+    protected readonly path: string,
     protected readonly baseUrl: string = environment.baseUrl
   ) {
-    this.apiUrl = `${this.baseUrl}${this.entityName}`;
+    this.apiUrl = `${this.baseUrl}${this.path}`;
   }
 
   public create(resource: Partial<T>): Observable<T> {
     return this.http.post<T>(`${this.apiUrl}`, resource);
+  }
+
+  public createAll(resource: Partial<T[]>): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}`, resource);
   }
 
   public getAll(query?: { [key: string]: string }): Observable<T[]> {

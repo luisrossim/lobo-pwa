@@ -1,14 +1,14 @@
 import { BehaviorSubject } from 'rxjs';
 import { CrudService } from './crud.service';
 import { Injectable } from '@angular/core';
-import { Item } from '../../models/item';
+import { ItemProps } from '../../models/item';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ItemService extends CrudService<Item> {
+export class ItemService extends CrudService<ItemProps> {
   constructor() {
-    super('/produtos');
+    super('/v1/item');
   }
 
   private itensCountSubject = new BehaviorSubject<number>(0);
