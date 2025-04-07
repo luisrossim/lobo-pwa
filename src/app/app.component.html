@@ -5,14 +5,11 @@
 }
 
 @if (showLayout) {
-    @if (screenWidth < 768) {
-        <app-nav-mobile />
-    } 
-    @else {
-        <app-sidenav
-            (onToggleSidenav)="onToggleSidenav($event)"
-        ></app-sidenav>
-    }
+    <app-nav-mobile />
+
+    <app-sidenav
+        (onToggleSidenav)="onToggleSidenav($event)"
+    ></app-sidenav>
     
     <app-body
         [collapsed]="isSideNavCollapsed"

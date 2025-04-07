@@ -5,44 +5,129 @@ import { TableModule } from 'primeng/table';
 import { BadgeModule } from 'primeng/badge';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
-import { HeaderComponent } from '../../components/layout/header/header.component';
-import { ItemService } from '../../core/services/item.service';
 import { ToastService } from '../../utils/services/toast.service';
-import { Item } from '../../models/item';
+import { HeaderComponent } from '../../layout/header/header.component';
+import { FormsModule } from '@angular/forms';
+import { HistoryItemAgrupado, InventoryHistory } from '../../models/inventory';
+import { InventoryService } from '../../core/services/inventory.service';
+import { InputText } from 'primeng/inputtext';
+import { format } from 'date-fns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-estoque',
-  imports: [CommonModule, ButtonModule, HeaderComponent, TableModule, BadgeModule, IconFieldModule, InputIconModule, InputTextModule, TooltipModule],
-  templateUrl: './estoque.component.html',
-  styleUrl: './estoque.component.css'
+  imports: [CommonModule, FormsModule, ButtonModule, TableModule, InputText, BadgeModule, IconFieldModule, InputIconModule, TooltipModule, HeaderComponent],
+  templateUrl: './estoque.component.html'
 })
 export class EstoqueComponent implements OnInit {
-  title: string = "Estoque"
-
-  private readonly itemService = inject(ItemService);
+  private readonly inventoryService = inject(InventoryService);
   private readonly toastService = inject(ToastService);
+  router = inject(Router);  
 
-  itens: Item[] = []
+  title: string = "Estoque Semanal"
+  inventoryHistoryGroup: any[] = []
+  _inventoryHistoryGroup: HistoryItemAgrupado[] = []
+  dataAgrupadas: string[] = []
+  finishedToday: boolean = false
 
-
-  constructor() {}
   
+  constructor() {}  
   
-  ngOnInit(): void {
-    this.fetchItens();
+
+  ngOnInit() {
+    this.fetchInventoryHistory();
   }
 
 
-  private fetchItens(){
-    this.itemService.getAll().subscribe({
-      next: (itens) => (
-        this.itens = itens || []
+  private fetchInventoryHistory(){
+    this.inventoryService.getAll().subscribe({
+      next: (result) => (
+        this.handleInventoryHistoryInterface(result)
       ),
       error: (error) => { 
-        this.toastService.error("Erro ao buscar estoque!");
+        this.toastService.error("Erro ao buscar histórico do inventário!")
       }
     });
+  }
+
+
+  handleInventoryHistoryInterface(registros: InventoryHistory[]){
+    this._inventoryHistoryGroup = this.agruparEstoquePorItem(registros);
+    this.agruparRegistrosPorData();
+  }
+
+
+  agruparEstoquePorItem(registros: any[]): HistoryItemAgrupado[] {
+    return registros.reduce((acc: HistoryItemAgrupado[], _atual) => {
+      const atual: InventoryHistory = _atual;
+  
+      let existente = acc.find(item => item.itemId === atual.ITEM_ID);
+      if (!existente) {
+        existente = {
+          itemId: atual.ITEM_ID,
+          descricao: atual.DESCRICAO,
+          estoqueMinimo: atual.ESTOQUE_MINIMO,
+          unidade: atual.UN_MEDIDA,
+          contagens: []
+        };
+        acc.push(existente);
+      }
+  
+      existente.contagens.push({
+        id: atual.ID,
+        quantidade: atual.QUANTIDADE,
+        criadoEm: atual.CRIADO_EM
+      });
+  
+      return acc;
+    }, []);
+  }
+
+
+  agruparRegistrosPorData(){
+    this.dataAgrupadas = Array.from(
+      new Set(
+        this._inventoryHistoryGroup.flatMap(item =>
+          item.contagens.map(c => c.criadoEm)
+        )
+      )
+    ).sort(); 
+
+    this.inventoryHistoryGroup = this._inventoryHistoryGroup.map(item => {
+      const contagensPorData: Record<string, { id?: number; quantidade?: number }> = {};
+    
+      this.dataAgrupadas.forEach(data => {
+        const contagem = item.contagens.find(c => c.criadoEm === data);
+        contagensPorData[data] = contagem
+          ? { id: contagem.id, quantidade: contagem.quantidade }
+          : {};
+      });
+    
+      return {
+        itemId: item.itemId,
+        descricao: item.descricao,
+        estoqueMinimo: item.estoqueMinimo,
+        unidade: item.unidade,
+        contagensPorData
+      };
+    });
+
+    this.hasDataHoje();
+  }
+
+
+  protected handleEstoqueMinimoText(estoqueMinimo: number, unidade: string){
+    return `${estoqueMinimo} ${unidade}`
+  }
+
+
+  hasDataHoje(): void {
+    const hoje = format(new Date(), 'yyyy-MM-dd');
+    this.finishedToday = this.dataAgrupadas.some(data => format(new Date(data), 'yyyy-MM-dd') === hoje);
+  }
+
+  navigateToNovaContagem(){
+    this.router.navigateByUrl('estoque/contagem')
   }
 }

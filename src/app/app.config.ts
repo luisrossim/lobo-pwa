@@ -4,13 +4,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { provideServiceWorker } from '@angular/service-worker';
 
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { providePrimeNG } from 'primeng/config';
 import { AuraCustom } from './utils/styles/auraCustom';
 
 import { routes } from './app.routes';
-import { httpInterceptor } from './core/auth/http.interceptor';
+import { httpInterceptor } from './core/interceptor/http.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +18,12 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([httpInterceptor])
     ),
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'enabled',
+      }),
+    ),
     provideAnimations(),
     provideAnimationsAsync(),
     providePrimeNG({

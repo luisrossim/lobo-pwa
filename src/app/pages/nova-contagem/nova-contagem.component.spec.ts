@@ -1,20 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EstoqueComponent } from './estoque.component';
+
+import { NovaContagemComponent } from './nova-contagem.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpInterceptor } from '../../core/interceptor/http.interceptor';
 
-describe('EstoqueComponent', () => {
-  let component: EstoqueComponent;
-  let fixture: ComponentFixture<EstoqueComponent>;
+describe('NovaContagemComponent', () => {
+  let component: NovaContagemComponent;
+  let fixture: ComponentFixture<NovaContagemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EstoqueComponent],
+      imports: [NovaContagemComponent],
       providers:[provideHttpClient(withInterceptors([httpInterceptor]))]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EstoqueComponent);
+    fixture = TestBed.createComponent(NovaContagemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

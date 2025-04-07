@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "primeicons/primeicons.css";
 
 @layer tailwind-base, primeng, tailwind-utilities;
@@ -14,6 +15,44 @@
 
 * {
     font-family: Inter, sans-serif;
+}
+
+h1 {
+    font-family: Urbanist, sans-serif !important;
+}
+
+.p-button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 10rem;
+}
+
+.p-button-sm {
+    padding: 0.5rem 1.1rem;
+}
+
+.p-button-label {
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+
+.p-button-icon {
+    padding-right: 0.2rem;
+}
+
+.p-inputtext {
+    background: transparent !important;
+}
+
+.p-inputtext.ng-invalid.ng-dirty {
+    border-color: var(--p-inputtext-invalid-border-color) !important;
+}
+
+.p-inputtext:enabled:focus {
+    border-color: #60a5fa;
+}
+
+.p-inputtext {
+    border-color: #e2e8f0;
 }
 
 .p-drawer-content {
@@ -91,7 +130,7 @@
     padding: 0 0 1rem 0;
 }
 
-@media (width < 576px) {
+@media (width < 1024px) {
     .p-toast {
         max-width: 280px;
     }
