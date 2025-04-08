@@ -73,8 +73,8 @@ export class NovaContagemComponent implements OnInit {
           outlined: true,
       },
       acceptButtonProps: {
-          label: 'Salvar',
-          severity: 'primary',
+          label: 'Finalizar e salvar',
+          severity: 'success',
       },
       accept: () => {
         this.finalizar();
@@ -109,6 +109,31 @@ export class NovaContagemComponent implements OnInit {
   }
 
 
+  confirmResetItens(event: Event){
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Deseja realmente recarregar a contagem? Essa ação irá limpar todos os campos.',
+      header: 'Confirmação',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-circle',
+      rejectButtonProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true,
+      },
+      acceptButtonProps: {
+          label: 'Recarregar',
+          severity: 'danger',
+      },
+      accept: () => {
+        this.resetItens();
+      },
+      reject: () => {},
+    });
+  }
+
+
   resetItens(){
     this.localStorageService.removeItem('itens');
     this.fetchItens();
@@ -116,9 +141,11 @@ export class NovaContagemComponent implements OnInit {
 
 
   handleItensToDTO(){
-    return this.itens.map((item) => ({
-      itemId: item.ID,
-      quantidade: item.NOVA_CONTAGEM || 0
-    }))
+    return this.itens
+      .filter(item => (item.NOVA_CONTAGEM != null))
+      .map((item) => ({
+        itemId: item.ID,
+        quantidade: item.NOVA_CONTAGEM || 0
+      }))
   }
 }

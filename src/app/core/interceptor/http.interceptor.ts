@@ -1,15 +1,15 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { UtilitiesService } from '../../utils/services/utilities.service';
 import { ToastService } from '../../utils/services/toast.service';
 import { tap } from 'rxjs';
+import { LoadingService } from '../../utils/services/loading.service';
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
-  const utilities = inject(UtilitiesService);
+  const loadingService = inject(LoadingService);
   const toastService = inject(ToastService);
   // const authService = inject(AuthService);
 
-  utilities.setLoading(true);
+  loadingService.setLoading(true);
 
   // const usuario = authService.getUserFromCookie();
   // if (usuario) {
@@ -21,13 +21,13 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     tap({
       error: (error: HttpErrorResponse) => {
-        utilities.setLoading(false);
+        loadingService.setLoading(false);
         if (error.status === 403) {
           toastService.error403();
         }
       },
       complete: () => {
-        utilities.setLoading(false);
+        loadingService.setLoading(false);
       },
     })
   );
