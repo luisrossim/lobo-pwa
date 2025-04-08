@@ -70,23 +70,22 @@
             <td>
               <p-badge 
                 [value]="handleEstoqueMinimoText(registro.estoqueMinimo, registro.unidade)" 
-                class="bg-slate-500" 
+                severity="secondary" 
                 badgeSize="large"
               />
             </td>
             
             @for (data of dataAgrupadas; track $index) {
               <td>
-                <ng-container *ngIf="registro.contagensPorData[data]?.quantidade !== undefined; else vazio">
-                  <p-badge
-                    [value]="registro.contagensPorData[data]?.quantidade"
-                    class="bg-blue-500"
-                    badgeSize="large"
-                  />
-                </ng-container>
-                <ng-template #vazio>
-                  -
-                </ng-template>
+                  @if(registro.contagens[data]?.quantidade !== null) {
+                    <p-badge
+                      [value]="registro.contagens[data].quantidade"
+                      class="bg-blue-500"
+                      badgeSize="large"
+                    />
+                  } @else {
+                    <span></span>
+                  }
               </td>
             }
             

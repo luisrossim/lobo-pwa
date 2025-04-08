@@ -11,12 +11,11 @@
                 <div class="flex items-center flex-wrap gap-4">
                     <p-button 
                         label="Recarregar" 
-                        (click)="resetItens()" 
+                        (click)="confirmResetItens($event)" 
                         icon="pi pi-refresh" 
-                        severity="warn" 
+                        severity="secondary" 
                         size="small"
                         rounded
-                        outlined
                     />
                     <p-button 
                         label="Salvar" 

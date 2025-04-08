@@ -9,6 +9,7 @@ import { LoadingComponent } from './layout/loading/loading.component';
 import { UtilitiesService } from './utils/services/utilities.service';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavMobileComponent } from './layout/nav-mobile/nav-mobile.component';
+import { LoadingService } from './utils/services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -17,9 +18,9 @@ import { NavMobileComponent } from './layout/nav-mobile/nav-mobile.component';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  toastService = inject(ToastService);
-  messageService = inject(MessageService);
-  utilitiesService = inject(UtilitiesService)
+  private toastService = inject(ToastService);
+  private messageService = inject(MessageService);
+  private loadingService = inject(LoadingService);
   
   showLayout = true;
   screenWidth = window.innerWidth;
@@ -61,7 +62,7 @@ export class AppComponent implements OnInit {
 
 
   private listenLoadingService() {
-    this.utilitiesService.loading$.subscribe((value) => {
+    this.loadingService.loading$.subscribe((value) => {
       this.isLoading = value;
     })
   }

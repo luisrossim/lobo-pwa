@@ -8,19 +8,13 @@ export interface InventoryHistory {
     CRIADO_EM: string 
 }
 
-export interface InventoryContagem {
-    id: number;
-    quantidade: number;
-    criadoEm: string;
-}
-
 export interface HistoryItemAgrupado {
     itemId: number;
     descricao: string;
     estoqueMinimo: number;
     unidade: string;
-    contagens: InventoryContagem[];
-}
+    contagens: Record<string, { id: number; quantidade: number }>;
+  }
 
 export interface CreateHistory {
     itemId: number
