@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { isPlatformBrowser } from '@angular/common';
 import { DatePickerModule } from 'primeng/datepicker';
 import { HeaderComponent } from '../../layout/header/header.component';
+import { options } from '../../utils/styles/chartStyles';
 
 
 @Component({
@@ -20,12 +21,8 @@ import { HeaderComponent } from '../../layout/header/header.component';
 export class HomeComponent implements OnInit {
   title: string = "Dashboard"
   platformId = inject(PLATFORM_ID);
-  data1: any;
-  data2: any;
-  data3: any;
-  options1: any;
-  options2: any;
-  options3: any;
+  data: any;
+  options: any = options;
   value: any[] = []
 
   constructor(private cd: ChangeDetectorRef) {}
@@ -42,81 +39,24 @@ export class HomeComponent implements OnInit {
 
   initChart() {
     if (isPlatformBrowser(this.platformId)) {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--p-text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
-        const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
-
-        this.data1 = {
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-            datasets: [
-                {
-                    label: 'Teste',
-                    data: [540, 325, 702, 620],
-                    backgroundColor: ['#47556999'],
-                    borderColor: ['#475569'],
-                    borderWidth: 1,
-                },
-            ],
-        };
-
-        this.options2 = {
-            aspectRatio: 1.2,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor
-                    }
-                }
-            }
-        };
-
-        this.data3 = {
+        this.data = {
             labels: ['01/Jan', '08/Jan', '15/Jan', '22/Jan', '29/Jan'],
             datasets: [
                 {
-                    label: 'Teste',
+                    label: 'Placa de alumínio',
                     data: [65, 59, 80, 81, 56, 55, 40],
                     fill: true,
                     backgroundColor: 'rgb(59,130,246,0.3)',
                     borderColor: 'rgb(59,130,246,1)',
                     tension: 0
+                },
+                {
+                    label: 'Estoque mínimo',
+                    data: [50, 50, 50, 50, 50, 50, 50],
+                    borderColor: 'rgb(204, 66, 36)',
+                    tension: 0
                 }
             ]
-        };
-
-        this.options3 = {
-            maintainAspectRatio: false,
-            aspectRatio: 1.1,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
         };
         this.cd.markForCheck()
     }

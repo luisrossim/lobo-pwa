@@ -17,6 +17,10 @@ export class InventoryService extends CrudService<InventoryHistory> {
     private countIsCompletedSubject = new BehaviorSubject<boolean>(false);
     public countIsCompleted$ = this.countIsCompletedSubject.asObservable();
 
+    public getCountIsCompletedValue(){
+        return this.countIsCompletedSubject.getValue();
+    }
+
     public fetchHistoryAndCheckToday(): Observable<InventoryHistory[]> {
         return this.getAll().pipe(
             tap(list => {

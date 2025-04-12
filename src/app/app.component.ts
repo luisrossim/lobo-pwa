@@ -1,4 +1,4 @@
-import { AfterContentInit, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { BodyComponent } from './layout/body/body.component';
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { SidenavToggle } from './layout/sidenav/sidenav-model';
@@ -6,14 +6,14 @@ import { ToastModule } from 'primeng/toast';
 import { ToastService } from './utils/services/toast.service';
 import { MessageService } from 'primeng/api';
 import { LoadingComponent } from './layout/loading/loading.component';
-import { UtilitiesService } from './utils/services/utilities.service';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavMobileComponent } from './layout/nav-mobile/nav-mobile.component';
 import { LoadingService } from './utils/services/loading.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BodyComponent, SidenavComponent, LoadingComponent, ToastModule, NavMobileComponent],
+  imports: [CommonModule, RouterOutlet, BodyComponent, SidenavComponent, LoadingComponent, ToastModule, NavMobileComponent],
   providers: [MessageService],
   templateUrl: './app.component.html'
 })

@@ -1,4 +1,4 @@
-<div class="sidenav bg-slate-50 border-r-2 border-slate-100 z-50" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+<div class="sidenav bg-white border-r border-slate-200 z-50" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
     <div class="logo-container">
         <button type="button" (click)="toggleCollapse()">
             <img src="assets/images/lobo-azul.png" class="min-w-[2.9rem] w-[2.9em] min-h-[2.9rem] h-[2.9em] rounded-full" alt="lobo-estoque-logo" draggable="false" />
@@ -35,13 +35,13 @@
         <ul class="sidenav-nav overflow-hidden">
             <li class="sidenav-nav-item">
                 <div class="sidenav-nav-link sidenav-nav-logout">
-                    <i class="pi pi-user sidenav-link-icon"></i>
+                    <i class="pi pi-user sidenav-link-icon !text-sm"></i>
                     @if(collapsed){ 
                         <div class="flex w-full justify-between items-center">
-                            <span class="text-slate-600 font-medium text-sm">luisrossasd9j8</span> 
+                            <span class="text-slate-600 text-xs">luisrossasd9j8</span> 
 
-                            <button type="button" class="min-w-[30px] min-h-[30px] bg-slate-200 border rounded-full">
-                                <i class="pi pi-sign-out text-xs"></i>
+                            <button type="button" class="min-w-[30px] min-h-[30px] bg-slate-100 rounded-full">
+                                <i class="pi pi-sign-out text-xs text-slate-500"></i>
                             </button>
                         </div>
                     }

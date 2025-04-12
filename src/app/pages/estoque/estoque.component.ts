@@ -14,6 +14,7 @@ import { InventoryService } from '../../core/services/inventory.service';
 import { InputText } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { UtilitiesService } from '../../utils/services/utilities.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-estoque',
@@ -54,9 +55,10 @@ export class EstoqueComponent implements OnInit {
 
 
   private listenToTodayCountIsCompleted(){
-    this.inventoryService.countIsCompleted$.subscribe(result => {
-      this.finishedToday = result;
-    });
+    this.inventoryService.countIsCompleted$
+      .subscribe(result => {
+        this.finishedToday = result;
+      });
   }
 
 

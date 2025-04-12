@@ -93,14 +93,16 @@ export class NovaContagemComponent implements OnInit {
   finalizar(){
     const resource = this.handleItensToDTO();
 
+    if (resource.length === 0){
+      this.toastService.error("Contagem vazia.")
+      return;
+    }
+
     this.inventoryService.createHistorico(resource).subscribe({
       next: () => {
         this.toastService.success("Contagem salva e finalizada com sucesso!");
         this.localStorageService.removeItem('itens');
-
-        setTimeout(() => {
-          this.router.navigateByUrl('/estoque');
-        }, 500);
+        this.router.navigateByUrl('/estoque');
       },
       error: (err) => {
         this.toastService.error("Erro ao finalizar contagem de itens.")
