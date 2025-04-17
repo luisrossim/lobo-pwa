@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { ItemService } from '../../core/services/item.service';
 import { ToastService } from '../../utils/services/toast.service';
-import { ItemPropsContagem } from '../../models/item';
+import { ItemNovaContagem } from '../../models/item';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
@@ -27,7 +27,7 @@ export class NovaContagemComponent implements OnInit {
 
   router = inject(Router);
   title = "Nova contagem"
-  itens: ItemPropsContagem[] = [] 
+  itens: ItemNovaContagem[] = [] 
 
 
   constructor(private confirmationService: ConfirmationService){}
@@ -45,15 +45,12 @@ export class NovaContagemComponent implements OnInit {
 
 
   private fetchItens(){
-    this.itensService.getAll().subscribe({
+    this.itensService.getAllWithNovaContagem().subscribe({
       next: (result) => {
-        this.itens = result.map(item => ({
-          ...item,
-          NOVA_CONTAGEM: null
-        }));
+        this.itens = result;
       },
       error: (err) => {
-        this.toastService.error("Erro ao buscar itens.")
+        this.toastService.error("Erro ao buscar itens.");
       }
     })
   }
@@ -93,14 +90,16 @@ export class NovaContagemComponent implements OnInit {
   finalizar(){
     const resource = this.handleItensToDTO();
 
+    if (resource.length === 0){
+      this.toastService.error("Contagem vazia.")
+      return;
+    }
+
     this.inventoryService.createHistorico(resource).subscribe({
       next: () => {
         this.toastService.success("Contagem salva e finalizada com sucesso!");
         this.localStorageService.removeItem('itens');
-
-        setTimeout(() => {
-          this.router.navigateByUrl('/estoque');
-        }, 500);
+        this.router.navigateByUrl('/estoque');
       },
       error: (err) => {
         this.toastService.error("Erro ao finalizar contagem de itens.")
@@ -144,7 +143,7 @@ export class NovaContagemComponent implements OnInit {
     return this.itens
       .filter(item => (item.NOVA_CONTAGEM != null))
       .map((item) => ({
-        itemId: item.ID,
+        itemId: item.COD_PRO,
         quantidade: item.NOVA_CONTAGEM || 0
       }))
   }

@@ -1,14 +1,14 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { CrudService } from './crud.service';
 import { Injectable } from '@angular/core';
-import { ItemProps } from '../../models/item';
+import { Item, ItemNovaContagem } from '../../models/item';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ItemService extends CrudService<ItemProps> {
+export class ItemService extends CrudService<Item> {
   constructor() {
-    super('/v1/item');
+    super('/item');
   }
 
   private itensCountSubject = new BehaviorSubject<number>(0);
@@ -16,5 +16,14 @@ export class ItemService extends CrudService<ItemProps> {
 
   updateItensCount(count: number): void {
     this.itensCountSubject.next(count);
+  }
+
+  getAllWithNovaContagem(): Observable<ItemNovaContagem[]> {
+    return this.getAll().pipe(
+      map(itens => itens.map(item => ({
+        ...item,
+        NOVA_CONTAGEM: null
+      })))
+    )
   }
 }

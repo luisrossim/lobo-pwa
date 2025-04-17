@@ -9,7 +9,7 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const toastService = inject(ToastService);
   // const authService = inject(AuthService);
 
-  loadingService.setLoading(true);
+  setTimeout(() => loadingService.setLoading(true), 0)
 
   // const usuario = authService.getUserFromCookie();
   // if (usuario) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
-import { HistoryItemAgrupado, InventoryHistory } from '../../models/inventory';
+import { ContagemEstoqueAgrupado, ContagemEstoque } from '../../models/inventory';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,9 @@ export class UtilitiesService {
     return objeto;
   }
 
-  getUniqueDatesFromArray(list: InventoryHistory[]): string[] {
+  getUniqueDatesFromArray(list: ContagemEstoque[]): string[] {
     return Array.from(
-        new Set(list.map(item => item.CRIADO_EM))
+        new Set(list.map(item => item.DATA_CONTAGEM))
     );
   }
 
@@ -30,24 +30,24 @@ export class UtilitiesService {
     return datas.some(data => format(new Date(data), 'yyyy-MM-dd') === hoje);
   }
 
-  groupByItemAndDate(registros: InventoryHistory[]): HistoryItemAgrupado[] {
-    return registros.reduce((acc: HistoryItemAgrupado[], _atual) => {
-      const atual: InventoryHistory = _atual;
+  groupByItemAndDate(registros: ContagemEstoque[]): ContagemEstoqueAgrupado[] {
+    return registros.reduce((acc: ContagemEstoqueAgrupado[], _atual) => {
+      const atual: ContagemEstoque = _atual;
   
-      let existente = acc.find(item => item.itemId === atual.ITEM_ID);
+      let existente = acc.find(item => item.itemId === atual.COD_PRO);
 
       if (!existente) {
         existente = {
-          itemId: atual.ITEM_ID,
-          descricao: atual.DESCRICAO,
-          estoqueMinimo: atual.ESTOQUE_MINIMO,
-          unidade: atual.UN_MEDIDA,
+          itemId: atual.COD_PRO,
+          descricao: atual.NOME_PRO,
+          estoqueMinimo: atual.ESTOQUE_MINIMO_PRO,
+          unidade: atual.UNIDADE_MEDIDA,
           contagens: {}
         };
         acc.push(existente);
       }
   
-      existente.contagens[atual.CRIADO_EM] = {
+      existente.contagens[atual.DATA_CONTAGEM] = {
         id: atual.ID,
         quantidade: atual.QUANTIDADE
       };

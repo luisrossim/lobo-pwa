@@ -1,11 +1,10 @@
-export interface ItemProps {
-    ID: number;
-    DESCRICAO: string;
-    ESTOQUE_MINIMO: number;
-    UN_MEDIDA: string;
-    FLAG_CONTROLE: string;
+export interface Item {
+    COD_PRO: number
+    NOME_PRO: string
+    ESTOQUE_MINIMO_PRO: number
+    UNIDADE_MEDIDA: string
 }
   
-export interface ItemPropsContagem extends ItemProps {
+export interface ItemNovaContagem extends Item {
     NOVA_CONTAGEM: number | null;
 }
