@@ -9,12 +9,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ToastService } from '../../utils/services/toast.service';
 import { HeaderComponent } from '../../layout/header/header.component';
 import { FormsModule } from '@angular/forms';
-import { HistoryItemAgrupado, InventoryHistory } from '../../models/inventory';
+import { ContagemEstoqueAgrupado, ContagemEstoque } from '../../models/inventory';
 import { InventoryService } from '../../core/services/inventory.service';
 import { InputText } from 'primeng/inputtext';
 import { Router } from '@angular/router';
 import { UtilitiesService } from '../../utils/services/utilities.service';
-import { first } from 'rxjs';
 
 @Component({
   selector: 'app-estoque',
@@ -28,7 +27,7 @@ export class EstoqueComponent implements OnInit {
   router = inject(Router);  
 
   title: string = "Estoque Semanal"
-  inventoryHistoryGroup: HistoryItemAgrupado[] = []
+  inventoryHistoryGroup: ContagemEstoqueAgrupado[] = []
   dataAgrupadas: string[] = []
   finishedToday: boolean = false
 
@@ -45,7 +44,7 @@ export class EstoqueComponent implements OnInit {
   private loadInventoryHistory(){
     this.inventoryService.fetchHistoryAndCheckToday().subscribe({
       next: (result) => (
-        this.handleInventoryHistoryInterface(result)
+        this.handleCountHistoryInterface(result)
       ),
       error: (error) => { 
         this.toastService.error("Erro ao buscar histórico do inventário!")
@@ -62,7 +61,7 @@ export class EstoqueComponent implements OnInit {
   }
 
 
-  handleInventoryHistoryInterface(registros: InventoryHistory[]){
+  handleCountHistoryInterface(registros: ContagemEstoque[]){
     this.dataAgrupadas = this.utilitiesService.getUniqueDatesFromArray(registros);
     this.inventoryHistoryGroup = this.utilitiesService.groupByItemAndDate(registros);   
   }

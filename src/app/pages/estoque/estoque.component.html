@@ -29,7 +29,7 @@
                     <input
                       pInputText
                       type="text"
-                      class="rounded-full px-4 max-w-[200px]"
+                      class="rounded-full px-4 max-w-[160px]"
                       (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
                       placeholder="Pesquisar"
                     />
@@ -39,7 +39,7 @@
                 <button
                   pButton
                   type="button"
-                  [label]="finishedToday ? 'Concluído' : 'Nova contagem'"
+                  [label]="finishedToday ? 'Concluído' : 'Contagem'"
                   rounded
                   size="small"
                   [icon]="finishedToday ? 'pi pi-check' : 'pi pi-plus'"
@@ -55,7 +55,7 @@
           <tr>
             <th class="w-[50px]">Item</th>
             <th class="w-[200px]">Descrição</th>
-            <th class="w-[200px]">Estoque Mínimo</th>
+            <th class="min-w-[200px] md:w-[100px]">Estoque Mínimo</th>
 
             @for (data of dataAgrupadas; track $index) {
               <th class="w-[200px]">

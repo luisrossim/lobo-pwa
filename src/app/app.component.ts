@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = event.urlAfterRedirects;
-        this.showLayout = !(url.includes('login') || url.includes('notfound'));
+        this.showLayout = !(url.includes('login') || url.includes('404'));
       }
     });
   }

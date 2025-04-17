@@ -4,5 +4,7 @@ export interface AuthRequest {
 }
 
 export interface AuthResponse {
-    token: string
+    login: string
+    accessToken: string
+    refreshToken: string
 }

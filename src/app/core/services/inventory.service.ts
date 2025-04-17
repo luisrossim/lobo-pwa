@@ -1,17 +1,17 @@
 import { inject, Injectable } from "@angular/core";
 import { CrudService } from "./crud.service";
-import { CreateHistory, InventoryHistory } from "../../models/inventory";
+import { NovaContagemEstoque, ContagemEstoque } from "../../models/inventory";
 import { BehaviorSubject, Observable, tap } from "rxjs";
 import { UtilitiesService } from "../../utils/services/utilities.service";
 
 @Injectable({
     providedIn: 'root',
 })
-export class InventoryService extends CrudService<InventoryHistory> {
+export class InventoryService extends CrudService<ContagemEstoque> {
     private utilitiesService = inject(UtilitiesService);
 
     constructor(){
-        super('/v1/inventory')
+        super('/inventory')
     }
     
     private countIsCompletedSubject = new BehaviorSubject<boolean>(false);
@@ -21,7 +21,7 @@ export class InventoryService extends CrudService<InventoryHistory> {
         return this.countIsCompletedSubject.getValue();
     }
 
-    public fetchHistoryAndCheckToday(): Observable<InventoryHistory[]> {
+    public fetchHistoryAndCheckToday(): Observable<ContagemEstoque[]> {
         return this.getAll().pipe(
             tap(list => {
                 const uniqueDates = this.utilitiesService.getUniqueDatesFromArray(list);
@@ -31,7 +31,7 @@ export class InventoryService extends CrudService<InventoryHistory> {
         );
     }
 
-    public createHistorico(resource: CreateHistory[]): Observable<void> {
+    public createHistorico(resource: NovaContagemEstoque[]): Observable<void> {
         return this.http.post<void>(`${this.apiUrl}`, resource);
     }
 }

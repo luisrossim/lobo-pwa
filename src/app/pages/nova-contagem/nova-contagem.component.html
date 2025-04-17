@@ -43,11 +43,11 @@
                         [ngClass]="{ 'bg-slate-50': $index % 2 === 1 }"
                     >
                         <span class="text-sm text-slate-400">
-                            {{ item.ID }}
+                            {{ $index + 1 }}
                         </span>
                         
                         <span class="text-sm">
-                            {{ item.DESCRICAO }}
+                            {{ item.NOME_PRO }}
                         </span>
                         
                         <input
