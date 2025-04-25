@@ -5,6 +5,8 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastService } from '../../../../utils/services/toast.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 
 @Component({
@@ -14,22 +16,39 @@ import { Router } from '@angular/router';
   styleUrl: './login-form.component.css'
 })
 export class LoginFormComponent {
+  protected readonly toastService = inject(ToastService);
+  protected readonly authService = inject(AuthService);
   router = inject(Router);
   loginForm: FormGroup;
 
+
   constructor(private formBuilder: FormBuilder) {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      login: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  onSubmit() {
+
+  autenticar() {
     if (this.loginForm.valid) {
-      console.log('Formulário enviado:', this.loginForm.value);
-      this.router.navigateByUrl('/estoque');
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (res) => {
+          this.actionsForLoginSuccess();
+        },
+        error: (err) => {
+          this.toastService.error(err.error.message || "Erro na autenticação.")
+        }
+      })
+
     } else {
-      console.log('Formulário inválido');
+      this.toastService.error("Formulário inválido, tente novamente.")
     }
+  }
+
+
+  actionsForLoginSuccess(): void {
+    this.toastService.success('Login realizado com successo.');
+    this.router.navigateByUrl('estoque');
   }
 }

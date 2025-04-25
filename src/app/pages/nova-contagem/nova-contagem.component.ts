@@ -9,7 +9,7 @@ import { InputText } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { LocalStorageService } from '../../core/services/local-storage.service';
+import { LocalStorageService } from '../../utils/services/local-storage.service';
 import { Router } from '@angular/router';
 import { InventoryService } from '../../core/services/inventory.service';
 
