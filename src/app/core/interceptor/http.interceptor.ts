@@ -7,16 +7,12 @@ import { LoadingService } from '../../utils/services/loading.service';
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
   const toastService = inject(ToastService);
-  // const authService = inject(AuthService);
 
-  setTimeout(() => loadingService.setLoading(true), 0)
+  setTimeout(() => loadingService.setLoading(true), 0);
 
-  // const usuario = authService.getUserFromCookie();
-  // if (usuario) {
-  //   req = req.clone({
-  //     setHeaders: { Authorization: `Bearer ${usuario.token}` },
-  //   });
-  // }
+  req = req.clone({
+    withCredentials: true
+  });
 
   return next(req).pipe(
     tap({
