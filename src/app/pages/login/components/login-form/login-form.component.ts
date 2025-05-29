@@ -12,8 +12,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 @Component({
   selector: 'app-login-form',
   imports: [ReactiveFormsModule, PasswordModule, InputTextModule, FloatLabel, ButtonModule],
-  templateUrl: './login-form.component.html',
-  styleUrl: './login-form.component.css'
+  templateUrl: './login-form.component.html'
 })
 export class LoginFormComponent {
   protected readonly toastService = inject(ToastService);
